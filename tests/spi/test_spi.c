@@ -1,4 +1,5 @@
 #include "avrunit.h"
+#include "spi.h"
 
 static int test_init(void) {
     AU_UNIT_START;
