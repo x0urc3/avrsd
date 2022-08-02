@@ -1,4 +1,4 @@
-add_library(spi STATIC spi.c)
+add_library(spi STATIC spi_driver.c)
 setup_avr_target(spi)
 target_include_directories(spi PUBLIC
     "$<BUILD_INTERFACE:$<$<BOOL:$<TARGET_PROPERTY:SPI_PRIVATE>>:${CMAKE_CURRENT_SOURCE_DIR}>>")

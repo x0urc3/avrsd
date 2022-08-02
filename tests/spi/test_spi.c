@@ -1,5 +1,5 @@
 #include "avrunit.h"
-#include "spi.h"
+#include "spi_driver.h"
 
 static int test_init(void) {
     AU_UNIT_START;
