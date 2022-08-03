@@ -4,7 +4,8 @@
 static int test_init(void) {
     AU_UNIT_START;
 
-//    AU_IGNORED(1 == 1);
+    SPI_init();
+    AU_ASSERT(SPCR == 0b01010011);
 
     AU_UNIT_END;
 }
