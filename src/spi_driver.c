@@ -8,3 +8,9 @@ void SPI_init(void) {
     SPCR = _BV(SPE) | _BV(MSTR);
     SPCR |= _BV(SPR1) | _BV(SPR0); // SCK frequency = fosc/128
 }
+
+uint8_t SPI_rw(uint8_t data) {
+    SPDR = data;
+    loop_until_bit_is_set(SPSR, SPIF);
+    return SPDR;
+}

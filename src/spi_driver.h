@@ -13,5 +13,6 @@
 #define SPI_CS_DISABLE()    SPI_PORT |= _BV(SPI_PIN_CS)
 
 void SPI_init(void);
+uint8_t SPI_rw(uint8_t data);
 
 #endif // _SPI_H
