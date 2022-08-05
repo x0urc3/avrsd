@@ -6,7 +6,5 @@ set_target_properties(spi PROPERTIES SPI_PRIVATE 1)
 
 add_library(sd STATIC sd.c)
 setup_avr_target(sd)
-target_include_directories(sd PUBLIC
-    "$<BUILD_INTERFACE:$<$<BOOL:$<TARGET_PROPERTY:SD_PRIVATE>>:${CMAKE_CURRENT_SOURCE_DIR}>>")
-set_target_properties(sd PROPERTIES SD_PRIVATE 1)
+target_include_directories(sd PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(sd spi)
