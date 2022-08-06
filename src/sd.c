@@ -4,6 +4,10 @@
 
 void SD_init(void) {
     SPI_init();
+
+#ifdef SD_PIN_VCC
+    SD_DDR |= _BV(SD_PIN_VCC);
+#endif // SD_PIN_VCC
 }
 
 /*
@@ -11,6 +15,11 @@ void SD_init(void) {
  * - Provide at least 1ms and 74 clock cycles before sending command.
  */
 void SD_powerUp(void) {
+
+#ifdef SD_PIN_VCC
+    SD_ENABLE();
+#endif // SD_PIN_VCC
+
     SPI_CS_ENABLE();
     _delay_ms(1);
 
