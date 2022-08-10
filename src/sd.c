@@ -12,7 +12,8 @@ void SD_init(void) {
 
 /*
  * SD power up sequence
- * - Provide at least 1ms and 74 clock cycles before sending command.
+ * - CS held high i.e. CS disable
+ * - Provide at least 1ms and 74 clock cycles while keeping CMD line to high
  */
 void SD_powerUp(void) {
 
@@ -20,7 +21,7 @@ void SD_powerUp(void) {
     SD_ENABLE();
 #endif // SD_PIN_VCC
 
-    SPI_CS_ENABLE();
+    SPI_CS_DISABLE();
     _delay_ms(1);
 
     for (uint8_t i = 0; i < 10; i++)
