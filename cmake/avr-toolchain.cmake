@@ -3,13 +3,32 @@
 # CMake toolchain for AVR microcontroller that depends on GNU AVR project and avrdude
 #
 
-set(AVR_MCU_F 1000000UL CACHE STRING "Set -DF_CPU. Default: 1000000UL")
-if (NOT AVR_MCU)
-    set(AVR_MCU atmega328p CACHE STRING "Set -mmcu. Default: atmega328")
-    message(STATUS "Building for AVR ${AVR_MCU}")
-endif (NOT AVR_MCU)
-set(TOOL_UPLOAD_ARGS -c stk500v1 -P /dev/ttyUSB0 -b 19200 -q
-    CACHE STRING "Set avrdude arguments: Default: -c stk500v1 -P /dev/ttyUSB0 -b 19200 -q")
+set(AVR_BOARD_TYPE "None" CACHE STRING "Set pre-configured AVR boards")
+set_property(CACHE AVR_BOARD_TYPE PROPERTY STRINGS "None" "Arduino")
+
+set(AVR_MCU_F 1000000UL CACHE STRING "Set -DF_CPU")
+set(AVR_MCU atmega328p CACHE STRING "Set -mmcu")
+
+set(TOOL_UPLOAD_PORT /dev/ttyUSB0 CACHE STRING "Set tool serial port")
+set(TOOL_UPLOAD_ARGS -c stk500v1 -P ${TOOL_UPLOAD_PORT} -b 19200 -q
+    CACHE STRING "Set avrdude arguments")
+
+if (AVR_BOARD_TYPE STREQUAL "Arduino")
+    set(AVR_MCU_F 16000000UL CACHE STRING "Set -DF_CPU" FORCE)
+    set(AVR_MCU atmega328p CACHE STRING "Set -mmcu" FORCE)
+    set(TOOL_UPLOAD_ARGS -c arduino -P ${TOOL_UPLOAD_PORT} -b 115200 -q
+        CACHE STRING "Set avrdude arguments: Default: -c stk500v1 -P /dev/ttyUSB0 -b 19200 -q"
+        FORCE)
+    set(AVR_BOARD_ARDUINO TRUE CACHE STRING "Using Arduino compatible board")
+else()
+    set(TOOL_UPLOAD_ARGS -c stk500v1 -P /dev/ttyUSB0 -b 19200 -q
+        CACHE STRING "Set avrdude arguments"
+        FORCE)
+    unset(AVR_BOARD_ARDUINO CACHE)
+endif ()
+
+message(STATUS "Building for AVR ${AVR_MCU} with board=${AVR_BOARD_TYPE}")
+
 set(TOOL_SIZE_ARGS -C CACHE STRING "Set arguments. Default: -C")
 set(AVR_BAUD 9600 CACHE STRING "Set AVR Baudrate. Default: 9600")
 set(AVR_FUSE_L 0x62 CACHE STRING "Set Low Fuse. Default: 0x62")
@@ -24,6 +43,7 @@ find_program(CMAKE_C_COMPILER avr-gcc REQUIRED)
 #endif()
 find_program(CMAKE_CXX_COMPILER avr-g++ REQUIRED)
 find_program(CMAKE_AR avr-gcc-ar REQUIRED)
+find_program(CMAKE_RANLIB avr-gcc-ranlib REQUIRED)
 find_program(TOOL_UPLOAD avrdude REQUIRED DOC "Set AVR upload tool. Default: avrdude")
 find_program(TOOL_SIZE avr-size REQUIRED DOC "Set binary size tool. Default: avr-size")
 find_program(TOOL_STRIP avr-strip REQUIRED DOC "Set binary strip tool. Default: avr-strip")
