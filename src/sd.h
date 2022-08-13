@@ -7,8 +7,8 @@
 #define SD_PORT    PORTB
 
 #ifdef SD_PIN_VCC
-#define SD_ENABLE()     (SD_PORT |= _BV(SPI_PIN_CS))
-#define SD_DISABLE()    (SD_PORT &= ~_BV(SPI_PIN_CS))
+#define SD_ENABLE()     (SD_PORT |= _BV(SD_PIN_VCC))
+#define SD_DISABLE()    (SD_PORT &= ~_BV(SD_PIN_VCC))
 #endif // SD_PIN_VCC
 
 void SD_init(void);

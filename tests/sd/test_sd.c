@@ -7,6 +7,10 @@ static int test_powerup(void) {
     SD_init();
     SD_powerUp();
 
+#ifdef SD_PIN_VCC
+    AU_ASSERT(SD_PORT & _BV(SD_PIN_VCC));
+#endif // SD_PIN_VCC
+
     AU_UNIT_END;
 }
 
