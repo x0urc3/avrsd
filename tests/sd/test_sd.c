@@ -21,7 +21,7 @@ static int test_cmd0(void) {
 
     uint8_t r1 =  SD_sendCmd(CMD0, 0);
 
-    AU_ASSERT(r1 == 0);
+    AU_ASSERT(r1 == R1_IDLE_STATE);
 
     AU_UNIT_END;
 }
