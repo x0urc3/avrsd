@@ -19,7 +19,8 @@ static int test_powerup(void) {
 static int test_cmd0(void) {
     AU_UNIT_START;
 
-    uint8_t r1 =  SD_sendCmd(CMD0, 0);
+    SD_writeCmd(CMD0, 0, CMD0_CRC);
+    uint8_t r1 = SD_readR1();
 
     AU_ASSERT(r1 == R1_IDLE_STATE);
 
@@ -29,10 +30,8 @@ static int test_cmd0(void) {
 static int test_cmd8_v1(void) {
     AU_UNIT_START;
 
-    uint32_t arg;
-    arg = 0x1 << 8;    // VHS
-    arg |= 0xaa;       // check pattern
-    uint8_t r1 =  SD_sendCmd(CMD8, arg);
+    SD_writeCmd(CMD8, CMD8_ARG, CMD8_CRC);
+    uint8_t r1 = SD_readR1();
 
     AU_ASSERT(r1 & R1_ILLEGAL_COMMAND);
 

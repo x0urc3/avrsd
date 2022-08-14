@@ -31,14 +31,22 @@
 #define SD_DISABLE()    (SD_PORT &= ~_BV(SD_PIN_VCC))
 #endif // SD_PIN_VCC
 
-#define CMD0    0
-#define CMD8    8
+#define SD_CMD_PREAMBLE     0x40
+#define SD_CMD_POSTAMBLE    0x01
+
+#define CMD0        0
+#define CMD0_CRC    0x94    // valid for argument 0x0
+
+#define CMD8        8
+#define CMD8_ARG    0x1AA   // (VHS << 8) | check_pattern
+#define CMD8_CRC    0x86    // valid for argument 0x1AA
 
 #define R1_IDLE_STATE       (1<<0)
 #define R1_ILLEGAL_COMMAND  (1<<1)
 
 void SD_init(void);
 void SD_powerUp(void);
-uint8_t SD_sendCmd(uint8_t codeword, uint32_t args);
+void SD_writeCmd(uint8_t codeword, uint32_t arg, uint8_t crc);
+uint8_t SD_readR1(void);
 
 #endif // _SD_H
