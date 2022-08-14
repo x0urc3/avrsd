@@ -12,7 +12,10 @@
 #define SD_DISABLE()    (SD_PORT &= ~_BV(SD_PIN_VCC))
 #endif // SD_PIN_VCC
 
+#define CMD0    0
+
 void SD_init(void);
 void SD_powerUp(void);
+uint8_t SD_sendCmd(uint8_t codeword, uint32_t args);
 
 #endif // _SD_H

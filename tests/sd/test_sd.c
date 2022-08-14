@@ -16,9 +16,20 @@ static int test_powerup(void) {
     AU_UNIT_END;
 }
 
+static int test_cmd0(void) {
+    AU_UNIT_START;
+
+    uint8_t r1 =  SD_sendCmd(CMD0, 0);
+
+    AU_ASSERT(r1 == 0);
+
+    AU_UNIT_END;
+}
+
 int main (void) {
 
     AU_RUN_TEST(0x01, test_powerup);
+    AU_RUN_TEST(0x11, test_cmd0);
 
     AU_OUTPUT();
 

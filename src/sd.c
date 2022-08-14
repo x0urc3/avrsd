@@ -29,3 +29,34 @@ void SD_powerUp(void) {
 
     SPI_CS_DISABLE();
 }
+
+/*
+ * Send SD command and return R1
+ * - Hardcode CRC for CMD0
+ */
+#define SD_CMD_PREAMBLE 0x40
+#define SD_CMD_POSTAMBLE 0x01
+uint8_t SD_sendCmd(uint8_t codeword, uint32_t arg) {
+
+    SPI_CS_ENABLE();
+
+    SPI_rw(codeword|SD_CMD_PREAMBLE);
+    SPI_rw((uint8_t)(arg >> 24));
+    SPI_rw((uint8_t)(arg >> 16));
+    SPI_rw((uint8_t)(arg >> 8));
+    SPI_rw((uint8_t)(arg));
+    uint8_t crc = 0;
+    if (codeword == CMD0)
+        crc = 0x94;
+    SPI_rw(crc|SD_CMD_POSTAMBLE);
+
+    uint8_t r1, i = 0;
+    do {
+        r1 = SPI_rw(0xff) & 0x80;
+        i++;
+    } while ( r1 && i < 10);
+
+    SPI_CS_DISABLE();
+
+    return r1;
+}
