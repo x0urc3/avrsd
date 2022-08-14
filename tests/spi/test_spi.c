@@ -17,7 +17,7 @@ static int test_rw(void) {
     int expr = 1;
 
     for (int i = 0;i < range;i++) {
-        if (SPI_rw(0xff) == 0xff) {
+        if (SPI_rw(0xff) != 0xff) {
             expr=0;
         }
     }
