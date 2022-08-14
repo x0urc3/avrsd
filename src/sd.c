@@ -73,9 +73,9 @@ uint8_t SD_sendCmd(uint8_t codeword, uint32_t arg) {
 
     uint8_t r1, i = 0;
     do {
-        r1 = SPI_rw(0xff) & 0x80;
+        r1 = SPI_rw(0xff);
         i++;
-    } while ( r1 && i < 10);
+    } while ( (r1 & 0x80) && i < 10);
 
     SPI_CS_DISABLE();
 

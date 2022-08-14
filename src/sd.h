@@ -34,6 +34,8 @@
 #define CMD0    0
 #define CMD8    8
 
+#define R1_IDLE_STATE   1
+
 void SD_init(void);
 void SD_powerUp(void);
 uint8_t SD_sendCmd(uint8_t codeword, uint32_t args);
