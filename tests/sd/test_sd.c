@@ -4,7 +4,7 @@
 static int test_powerup(void) {
     AU_UNIT_START;
 
-    SD_init();
+    SD_setup();
     SD_powerUp();
 
 #ifdef SD_PIN_VCC

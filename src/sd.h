@@ -44,7 +44,7 @@
 #define R1_IDLE_STATE       (1<<0)
 #define R1_ILLEGAL_COMMAND  (1<<1)
 
-void SD_init(void);
+void SD_setup(void);
 void SD_powerUp(void);
 void SD_writeCmd(uint8_t codeword, uint32_t arg, uint8_t crc);
 uint8_t SD_readR1(void);

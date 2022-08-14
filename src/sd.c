@@ -21,7 +21,7 @@
 #include "spi_driver.h"
 #include "sd.h"
 
-void SD_init(void) {
+void SD_setup(void) {
     SPI_init();
 
 #ifdef SD_PIN_VCC
