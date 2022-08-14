@@ -57,6 +57,9 @@ void SD_powerUp(void) {
 #define SD_CMD_POSTAMBLE 0x01
 uint8_t SD_sendCmd(uint8_t codeword, uint32_t arg) {
 
+    int size = 10;
+    uint8_t result[size];
+
     SPI_CS_ENABLE();
 
     SPI_rw(codeword|SD_CMD_PREAMBLE);
@@ -66,9 +69,9 @@ uint8_t SD_sendCmd(uint8_t codeword, uint32_t arg) {
     SPI_rw((uint8_t)(arg));
     uint8_t crc = 0;
     if (codeword == CMD0)
-        crc = 0x94;
+        crc = 0x94; // Valid for CMD0, 0
     if (codeword == CMD8)
-        crc = 0x85;
+        crc = 0x86; // Valid for CMD8, 0x1AA
     SPI_rw(crc|SD_CMD_POSTAMBLE);
 
     uint8_t r1, i = 0;

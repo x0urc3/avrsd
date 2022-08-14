@@ -34,7 +34,8 @@
 #define CMD0    0
 #define CMD8    8
 
-#define R1_IDLE_STATE   1
+#define R1_IDLE_STATE       (1<<0)
+#define R1_ILLEGAL_COMMAND  (1<<1)
 
 void SD_init(void);
 void SD_powerUp(void);
