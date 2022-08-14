@@ -11,6 +11,8 @@ static int test_powerup(void) {
     AU_ASSERT(SD_PORT & _BV(SD_PIN_VCC));
 #endif // SD_PIN_VCC
 
+    AU_ASSERT(SPI_PORT & _BV(SPI_PIN_CS));
+
     AU_UNIT_END;
 }
 
