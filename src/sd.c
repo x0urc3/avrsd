@@ -48,6 +48,8 @@ uint8_t SD_sendCmd(uint8_t codeword, uint32_t arg) {
     uint8_t crc = 0;
     if (codeword == CMD0)
         crc = 0x94;
+    if (codeword == CMD8)
+        crc = 0x85;
     SPI_rw(crc|SD_CMD_POSTAMBLE);
 
     uint8_t r1, i = 0;

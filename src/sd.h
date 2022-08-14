@@ -13,6 +13,7 @@
 #endif // SD_PIN_VCC
 
 #define CMD0    0
+#define CMD8    8
 
 void SD_init(void);
 void SD_powerUp(void);
