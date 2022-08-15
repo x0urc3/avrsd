@@ -19,8 +19,10 @@ static int test_powerup(void) {
 static int test_cmd0(void) {
     AU_UNIT_START;
 
+    SPI_CS_ENABLE();
     SD_writeCmd(CMD0, 0, CMD0_CRC);
     uint8_t r1 = SD_readR1();
+    SPI_CS_DISABLE();
 
     AU_ASSERT(r1 == R1_IDLE_STATE);
 
@@ -30,8 +32,10 @@ static int test_cmd0(void) {
 static int test_cmd8_v1(void) {
     AU_UNIT_START;
 
+    SPI_CS_ENABLE();
     SD_writeCmd(CMD8, CMD8_ARG, CMD8_CRC);
     uint8_t r1 = SD_readR1();
+    SPI_CS_DISABLE();
 
     AU_ASSERT(r1 & R1_ILLEGAL_COMMAND);
 

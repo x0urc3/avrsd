@@ -51,8 +51,6 @@ void SD_powerUp(void) {
 
 void SD_writeCmd(uint8_t codeword, uint32_t arg, uint8_t crc) {
 
-    SPI_CS_ENABLE();
-
     SPI_rw(codeword|SD_CMD_PREAMBLE);
     SPI_rw((uint8_t)(arg >> 24));
     SPI_rw((uint8_t)(arg >> 16));
@@ -69,8 +67,6 @@ uint8_t SD_readR1(void) {
         r1 = SPI_rw(0xff);
         i++;
     } while ( (r1 & 0x80) && i < 10);
-
-    SPI_CS_DISABLE();
 
     return r1;
 }
