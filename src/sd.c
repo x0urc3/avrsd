@@ -51,6 +51,8 @@ void SD_powerUp(void) {
 
 void SD_writeCmd(uint8_t codeword, uint32_t arg, uint8_t crc) {
 
+    SPI_rw(0xff);
+
     SPI_rw(codeword|SD_CMD_PREAMBLE);
     SPI_rw((uint8_t)(arg >> 24));
     SPI_rw((uint8_t)(arg >> 16));

@@ -29,7 +29,7 @@ static int test_cmd0(void) {
     AU_UNIT_END;
 }
 
-static int test_cmd8_v1(void) {
+static int test_cmd8_v2(void) {
     AU_UNIT_START;
 
     SPI_CS_ENABLE();
@@ -43,9 +43,9 @@ static int test_cmd8_v1(void) {
 
     SPI_CS_DISABLE();
 
-    AU_ASSERT(r7[0] & R1_ILLEGAL_COMMAND);
-    AU_ASSERT(r7[3] & VHS_27_36);
-    AU_ASSERT(r7[4] & CHECK_PATTERN);
+    AU_ASSERT(r7[0] == R1_IDLE_STATE);
+    AU_ASSERT(r7[3] == VHS_27_36);
+    AU_ASSERT(r7[4] == CHECK_PATTERN);
 
     AU_UNIT_END;
 }
@@ -55,7 +55,7 @@ int main (void) {
 
     AU_RUN_TEST(0x01, test_powerup);
     AU_RUN_TEST(0x11, test_cmd0);
-    AU_RUN_TEST(0x12, test_cmd8_v1);
+    AU_RUN_TEST(0x12, test_cmd8_v2);
 
     AU_OUTPUT();
 
