@@ -34,12 +34,14 @@
 #define SD_CMD_PREAMBLE     0x40
 #define SD_CMD_POSTAMBLE    0x01
 
-#define CMD0        0
-#define CMD0_CRC    0x94    // valid for argument 0x0
+#define CMD0            0
+#define CMD0_CRC        0x94    // valid for argument 0x0
 
-#define CMD8        8
-#define CMD8_ARG    0x1AA   // (VHS << 8) | check_pattern
-#define CMD8_CRC    0x86    // valid for argument 0x1AA
+#define CMD8            8
+#define VHS_27_36       0x1
+#define CHECK_PATTERN   0xAA
+#define CMD8_ARG        (VHS_27_36 << 8) | CHECK_PATTERN
+#define CMD8_CRC        0x86    // valid for argument 0x1AA
 
 #define R1_IDLE_STATE       (1<<0)
 #define R1_ILLEGAL_COMMAND  (1<<1)

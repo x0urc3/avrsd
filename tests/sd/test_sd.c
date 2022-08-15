@@ -34,10 +34,18 @@ static int test_cmd8_v1(void) {
 
     SPI_CS_ENABLE();
     SD_writeCmd(CMD8, CMD8_ARG, CMD8_CRC);
-    uint8_t r1 = SD_readR1();
+
+    uint8_t r7[5];
+    r7[0] = SD_readR1();
+    for (int i = 1; i < 5; i++) {
+        r7[i] = SPI_rw(0xff);
+    }
+
     SPI_CS_DISABLE();
 
-    AU_ASSERT(r1 & R1_ILLEGAL_COMMAND);
+    AU_ASSERT(r7[0] & R1_ILLEGAL_COMMAND);
+    AU_ASSERT(r7[3] & VHS_27_36);
+    AU_ASSERT(r7[4] & CHECK_PATTERN);
 
     AU_UNIT_END;
 }
