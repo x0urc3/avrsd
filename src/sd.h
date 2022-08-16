@@ -45,18 +45,27 @@
 
 #define CMD55           55
 #define ACMD41          41
+#define ACMD41_ARG1     0X40000000    // HSC=1 (1<<30), Ver2 SDHC/SDXC
+#define ACMD41_ARG0     0             // HSC=0, Ver1 or Ver2 SD Standard Capacity
 
+#define R1_READY_STATE      0
 #define R1_IDLE_STATE       (1<<0)
 #define R1_ILLEGAL_COMMAND  (1<<1)
 
-#define OCR_HSC_1       0X40000000  // (1<<30)
-#define OCR_HSC_0       0X0
+
+
+enum error {
+    CMD0_ERROR,
+    CMD8_ERROR,
+    ACMD41_ERROR
+};
 
 void SD_setup(void);
 void SD_powerUp(void);
 void SD_writeCmd(uint8_t codeword, uint32_t arg, uint8_t crc);
 uint8_t SD_readR1(void);
 void SD_readResponse(uint8_t *res, const uint8_t size);
+uint8_t SD_init(void);
 
 #define SD_writeAcmd(codeword, arg, crc)    \
     SD_writeCmd(CMD55, 0, 0);   \

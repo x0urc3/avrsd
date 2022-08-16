@@ -72,17 +72,26 @@ static int test_acmd41(void) {
 
     uint8_t r1, i=20;
     do {
-        SD_writeAcmd(ACMD41, OCR_HSC_1, 0);
+        SD_writeAcmd(ACMD41, ACMD41_ARG1, 0);
         r1 = SD_readR1();
         i--;
-    } while ((r1 != 0) && i);
+    } while ((r1 != R1_READY_STATE) && i);
 
     SPI_CS_DISABLE();
 
-    AU_ASSERT(r1 == 0);
+    AU_ASSERT(r1 == R1_READY_STATE);
 
     AU_UNIT_END;
 }
+
+static int test_init(void) {
+    AU_UNIT_START;
+
+    AU_ASSERT(SD_init() == 0);
+
+    AU_UNIT_END;
+}
+
 
 int main (void) {
 
@@ -91,6 +100,7 @@ int main (void) {
     AU_RUN_TEST(0x12, test_cmd8_v2);
     AU_RUN_TEST(0x13, test_cmd8_v1);
     AU_RUN_TEST(0x14, test_acmd41);
+    AU_RUN_TEST(0x21, test_init);
 
     AU_OUTPUT();
 
