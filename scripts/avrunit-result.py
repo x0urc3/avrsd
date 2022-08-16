@@ -69,7 +69,7 @@ if __name__ == '__main__':
         with open(args.file, 'rb') as f:
             data = f.read()
     elif (args.port):
-        s = serial.Serial(args.port, args.baud)
+        s = serial.Serial(args.port, args.baud, timeout=1)
 
         time.sleep(2)
         s.write(b'r')
