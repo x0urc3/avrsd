@@ -36,10 +36,7 @@ static int test_cmd8_v2(void) {
     SD_writeCmd(CMD8, CMD8_ARG, CMD8_CRC);
 
     uint8_t r7[5];
-    r7[0] = SD_readR1();
-    for (int i = 1; i < 5; i++) {
-        r7[i] = SPI_rw(0xff);
-    }
+    SD_readResponse(r7, sizeof(r7));
 
     SPI_CS_DISABLE();
 

@@ -50,5 +50,6 @@ void SD_setup(void);
 void SD_powerUp(void);
 void SD_writeCmd(uint8_t codeword, uint32_t arg, uint8_t crc);
 uint8_t SD_readR1(void);
+void SD_readResponse(uint8_t *res, const uint8_t size);
 
 #endif // _SD_H

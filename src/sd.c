@@ -72,3 +72,14 @@ uint8_t SD_readR1(void) {
 
     return r1;
 }
+
+/* Read SD command response
+ *  - MSB byte is always R1
+ */
+void SD_readResponse(uint8_t *res, const uint8_t size) {
+
+    res[0] = SD_readR1();
+
+    for (uint8_t i = 1; i < size; i++)
+        res[i] = SPI_rw(0xff);
+}
