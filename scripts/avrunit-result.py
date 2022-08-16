@@ -60,6 +60,7 @@ if __name__ == '__main__':
     group.add_argument("-f", "--file", help="EEPROM dump file")
     group.add_argument("-p", "--port", help="Serial port")
     parser.add_argument("-b", "--baud", type=int, help="Serial baud rate")
+    parser.add_argument("-r", "--raw", action='store_true', help="Print raw dump")
     args = parser.parse_args()
     if (args.port and args.baud is None):
         parser.error('Serial port requires --baud argument')
@@ -74,6 +75,10 @@ if __name__ == '__main__':
         s.write(b'r')
 
         data = s.read(sizeof_stat_t_size + (sizeof_record_t*AU_MAX_TEST))
+
+    if (args.raw):
+        print("{}:{}".format(len(data), data.hex()))
+        sys.exit(0)
 
     record_size = struct.unpack('H', data[0:sizeof_stat_t_size])[0]
     record = au_unpack(record_size, sizeof_record_t, 'BB', 2, AU_F_SIZE)
