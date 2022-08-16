@@ -43,13 +43,24 @@
 #define CMD8_ARG        (VHS_27_36 << 8) | CHECK_PATTERN
 #define CMD8_CRC        0x86    // valid for argument 0x1AA
 
+#define CMD55           55
+#define ACMD41          41
+
 #define R1_IDLE_STATE       (1<<0)
 #define R1_ILLEGAL_COMMAND  (1<<1)
+
+#define OCR_HSC_1       0X40000000  // (1<<30)
+#define OCR_HSC_0       0X0
 
 void SD_setup(void);
 void SD_powerUp(void);
 void SD_writeCmd(uint8_t codeword, uint32_t arg, uint8_t crc);
 uint8_t SD_readR1(void);
 void SD_readResponse(uint8_t *res, const uint8_t size);
+
+#define SD_writeAcmd(codeword, arg, crc)    \
+    SD_writeCmd(CMD55, 0, 0);   \
+    SD_readR1();   \
+    SD_writeCmd(codeword, arg, crc);
 
 #endif // _SD_H

@@ -65,12 +65,32 @@ static int test_cmd8_v1(void) {
     AU_UNIT_END;
 }
 
+static int test_acmd41(void) {
+    AU_UNIT_START;
+
+    SPI_CS_ENABLE();
+
+    uint8_t r1, i=20;
+    do {
+        SD_writeAcmd(ACMD41, OCR_HSC_1, 0);
+        r1 = SD_readR1();
+        i--;
+    } while ((r1 != 0) && i);
+
+    SPI_CS_DISABLE();
+
+    AU_ASSERT(r1 == 0);
+
+    AU_UNIT_END;
+}
+
 int main (void) {
 
     AU_RUN_TEST(0x01, test_powerup);
     AU_RUN_TEST(0x11, test_cmd0);
     AU_RUN_TEST(0x12, test_cmd8_v2);
     AU_RUN_TEST(0x13, test_cmd8_v1);
+    AU_RUN_TEST(0x14, test_acmd41);
 
     AU_OUTPUT();
 
