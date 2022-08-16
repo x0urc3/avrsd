@@ -58,7 +58,7 @@ static int test_cmd8_v1(void) {
 
     SPI_CS_DISABLE();
 
-    AU_ASSERT(r7[0] == R1_ILLEGAL_COMMAND);
+    AU_ASSERT_FAIL(r7[0] == R1_ILLEGAL_COMMAND);
     AU_ASSERT(r7[3] == VHS_27_36);
     AU_ASSERT(r7[4] == CHECK_PATTERN);
 
