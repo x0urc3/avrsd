@@ -47,12 +47,30 @@ static int test_cmd8_v2(void) {
     AU_UNIT_END;
 }
 
+static int test_cmd8_v1(void) {
+    AU_UNIT_START;
+
+    SPI_CS_ENABLE();
+    SD_writeCmd(CMD8, CMD8_ARG, CMD8_CRC);
+
+    uint8_t r7[5];
+    SD_readResponse(r7, sizeof(r7));
+
+    SPI_CS_DISABLE();
+
+    AU_ASSERT(r7[0] == R1_ILLEGAL_COMMAND);
+    AU_ASSERT(r7[3] == VHS_27_36);
+    AU_ASSERT(r7[4] == CHECK_PATTERN);
+
+    AU_UNIT_END;
+}
 
 int main (void) {
 
     AU_RUN_TEST(0x01, test_powerup);
     AU_RUN_TEST(0x11, test_cmd0);
     AU_RUN_TEST(0x12, test_cmd8_v2);
+    AU_RUN_TEST(0x13, test_cmd8_v1);
 
     AU_OUTPUT();
 
