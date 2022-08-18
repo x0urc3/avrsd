@@ -72,10 +72,13 @@
 
 #define SD_BLOCK_LENGTH 512
 
-enum error {
+enum status {
+    SUCCESS,
     CMD0_ERROR,
     CMD8_ERROR,
-    ACMD41_ERROR
+    ACMD41_ERROR,
+    CMD24_ERROR,
+    CMD24_WRITE_ERROR
 };
 
 void SD_setup(void);
