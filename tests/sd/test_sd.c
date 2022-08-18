@@ -75,11 +75,11 @@ static int test_acmd41(void) {
         SD_writeAcmd(ACMD41, ACMD41_ARG1, 0);
         r1 = SD_readR1();
         i--;
-    } while ((r1 != R1_READY_STATE) && i);
+    } while ((r1 != R1_OK) && i);
 
     SPI_CS_DISABLE();
 
-    AU_ASSERT(r1 == R1_READY_STATE);
+    AU_ASSERT(r1 == R1_OK);
 
     AU_UNIT_END;
 }

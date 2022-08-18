@@ -112,8 +112,8 @@ uint8_t SD_init(void) {
         SD_writeAcmd(ACMD41, arg_acmd41, 0);
         r1 = SD_readR1();
         i--;
-    } while ((r1 != R1_READY_STATE) && i);
-    if (r1 != R1_READY_STATE)
+    } while ((r1 != R1_OK) && i);
+    if (r1 != R1_OK)
         return ACMD41_ERROR;
 
     SPI_CS_DISABLE();

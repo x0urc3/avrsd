@@ -26,7 +26,7 @@ static int test_cmd17 (void) {
 
     SPI_CS_DISABLE();
 
-    AU_ASSERT(r1 == R1_READY_STATE);
+    AU_ASSERT(r1 == R1_OK);
     AU_ASSERT(token == TOKEN_SINGLE_BLOCK_START);
 
     AU_UNIT_END;
@@ -45,7 +45,7 @@ static int test_cmd13 (void) {
 
     SPI_CS_DISABLE();
 
-    AU_ASSERT(r2[0] == R1_READY_STATE);
+    AU_ASSERT(r2[0] == R1_OK);
     AU_ASSERT(r2[1] == 0);
 
     AU_UNIT_END;

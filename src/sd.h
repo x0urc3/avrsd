@@ -51,7 +51,7 @@
 #define CMD13           13
 #define CMD17           17
 
-#define R1_READY_STATE      0
+#define R1_OK               0
 #define R1_IDLE_STATE       (1<<0)
 #define R1_ILLEGAL_COMMAND  (1<<1)
 
