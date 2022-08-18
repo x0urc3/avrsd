@@ -66,6 +66,7 @@
 #define TOKEN_READ_ERROR_CC             0x2
 #define TOKEN_READ_ERROR_ECC            0x4
 #define TOKEN_READ_ERROR_OUT_OF_RANGE   0x8
+#define TOKEN_WRITE_MASK                0x1f // 0b00011111
 #define TOKEN_WRITE_ACCEPT              0x5 // 0bxxx00101
 #define TOKEN_WRITE_ERROR_CRC           0xb // 0bxxx01011
 #define TOKEN_WRITE_ERROR               0xd // 0bxxx01101
@@ -77,6 +78,8 @@ enum status {
     CMD0_ERROR,
     CMD8_ERROR,
     ACMD41_ERROR,
+    CMD17_ERROR,
+    CMD17_READ_ERROR,
     CMD24_ERROR,
     CMD24_WRITE_ERROR
 };
@@ -87,8 +90,8 @@ void SD_writeCmd(uint8_t codeword, uint32_t arg, uint8_t crc);
 uint8_t SD_readR1(void);
 void SD_readResponse(uint8_t *res, const uint8_t size);
 uint8_t SD_init(void);
-void SD_writeBlock(uint8_t *dat);
-void SD_readBlock(uint8_t *dat);
+uint8_t SD_writeBlock(const uint8_t *dat, uint32_t addr);
+uint8_t SD_readBlock(uint8_t *dat, uint32_t addr);
 
 #define SD_writeAcmd(codeword, arg, crc)    \
     SD_writeCmd(CMD55, 0, 0);   \
