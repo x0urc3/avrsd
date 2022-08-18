@@ -17,7 +17,7 @@ static int test_cmd17 (void) {
     do {
         token = SPI_rw(0xff);
         timeout--;
-    } while ( (token != TOKEN_SINGLE_BLOCK_START) && timeout);
+    } while ( (token == 0xff) && timeout);
 
     //flush data and CRC
     for (int j = 0; j < (512+2); j++) {
@@ -27,7 +27,39 @@ static int test_cmd17 (void) {
     SPI_CS_DISABLE();
 
     AU_ASSERT(r1 == R1_OK);
-    AU_ASSERT(token == TOKEN_SINGLE_BLOCK_START);
+    AU_ASSERT(token == TOKEN_BLOCK_START);
+    AU_ASSERT(token != TOKEN_DATA_ERROR_OUT_OF_RANGE);
+
+    AU_UNIT_END;
+}
+
+static int test_cmd17_out_of_range (void) {
+    AU_UNIT_START;
+
+    SD_setup();
+    SD_init();
+
+    SPI_CS_ENABLE();
+    SD_writeCmd(CMD17, 0xffffffff, 0);
+
+    uint8_t r1 = SD_readR1();
+
+    int timeout=50;     // Based on observation
+    uint8_t token;
+    do {
+        token = SPI_rw(0xff);
+        timeout--;
+    } while ( (token == 0xff) && timeout);
+
+    //flush data and CRC
+    for (int j = 0; j < (512+2); j++) {
+        SPI_rw(0xff);
+    }
+
+    SPI_CS_DISABLE();
+
+    AU_ASSERT(r1 == R1_OK);
+    AU_ASSERT(token == TOKEN_DATA_ERROR_OUT_OF_RANGE);
 
     AU_UNIT_END;
 }
@@ -56,7 +88,8 @@ static int test_cmd13 (void) {
 int main (void) {
 
     AU_RUN_TEST(0x01, test_cmd17);
-    AU_RUN_TEST(0x02, test_cmd13);
+    AU_RUN_TEST(0x02, test_cmd17_out_of_range);
+    AU_RUN_TEST(0x21, test_cmd13);
 
     AU_OUTPUT();
 
