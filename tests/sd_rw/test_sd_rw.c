@@ -12,7 +12,7 @@ static int test_cmd17 (void) {
 
     uint8_t r1 = SD_readR1();
 
-    int timeout = 50;     // Based on observation
+    int timeout = SD_MAX_WRITE_CYCLE;
     uint8_t token = 0xff;
     do {
         token = SPI_rw(0xff);
@@ -20,7 +20,7 @@ static int test_cmd17 (void) {
     } while ( (token == 0xff) && timeout);
 
     //flush data and CRC
-    for (int j = 0; j < (512+2); j++) {
+    for (int j = 0; j < (SD_BLOCK_LENGTH+2); j++) {
         SPI_rw(0xff);
     }
 
@@ -44,7 +44,7 @@ static int test_cmd17_out_of_range (void) {
 
     uint8_t r1 = SD_readR1();
 
-    int timeout = 50;     // Based on observation
+    int timeout = SD_MAX_WRITE_CYCLE;
     uint8_t token = 0xff;
     do {
         token = SPI_rw(0xff);
@@ -52,7 +52,7 @@ static int test_cmd17_out_of_range (void) {
     } while ( (token == 0xff) && timeout);
 
     //flush data and CRC
-    for (int j = 0; j < (512+2); j++) {
+    for (int j = 0; j < (SD_BLOCK_LENGTH+2); j++) {
         SPI_rw(0xff);
     }
 
