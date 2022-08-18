@@ -48,6 +48,7 @@
 #define ACMD41_ARG1     0X40000000    // HSC=1 (1<<30), Ver2 SDHC/SDXC
 #define ACMD41_ARG0     0             // HSC=0, Ver1 or Ver2 SD Standard Capacity
 
+#define CMD13           13
 #define CMD17           17
 
 #define R1_READY_STATE      0
