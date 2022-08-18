@@ -62,10 +62,10 @@
 #define R1_ILLEGAL_COMMAND  (1<<1)
 
 #define TOKEN_BLOCK_START               0xFE
-#define TOKEN_DATA_ERROR                0x1
-#define TOKEN_DATA_ERROR_CC             0x2
-#define TOKEN_DATA_ERROR_ECC            0x4
-#define TOKEN_DATA_ERROR_OUT_OF_RANGE   0x8
+#define TOKEN_READ_ERROR                0x1
+#define TOKEN_READ_ERROR_CC             0x2
+#define TOKEN_READ_ERROR_ECC            0x4
+#define TOKEN_READ_ERROR_OUT_OF_RANGE   0x8
 #define TOKEN_WRITE_ACCEPT              0x5 // 0bxxx00101
 #define TOKEN_WRITE_ERROR_CRC           0xb // 0bxxx01011
 #define TOKEN_WRITE_ERROR               0xd // 0bxxx01101

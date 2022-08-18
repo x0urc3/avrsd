@@ -28,7 +28,7 @@ static int test_cmd17 (void) {
 
     AU_ASSERT(r1 == R1_OK);
     AU_ASSERT(token == TOKEN_BLOCK_START);
-    AU_ASSERT(token != TOKEN_DATA_ERROR_OUT_OF_RANGE);
+    AU_ASSERT(token != TOKEN_READ_ERROR_OUT_OF_RANGE);
 
     AU_UNIT_END;
 }
@@ -59,7 +59,7 @@ static int test_cmd17_out_of_range (void) {
     SPI_CS_DISABLE();
 
     AU_ASSERT(r1 == R1_OK);
-    AU_ASSERT(token == TOKEN_DATA_ERROR_OUT_OF_RANGE);
+    AU_ASSERT(token == TOKEN_READ_ERROR_OUT_OF_RANGE);
 
     AU_UNIT_END;
 }
