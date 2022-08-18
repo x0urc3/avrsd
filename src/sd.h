@@ -50,6 +50,12 @@
 
 #define CMD13           13
 #define CMD17           17
+#define CMD24           24
+
+#define SD_MAX_READ_CYCLE   1562    // Maximum length of 100ms
+                                    // 100ms * (16Mhz / 128) / 8bit
+#define SD_MAX_WRITE_CYCLE  3906    // Maximum length of 250ms
+                                    // 250ms * (16Mhz / 128) / 8bit
 
 #define R1_OK               0
 #define R1_IDLE_STATE       (1<<0)
@@ -60,6 +66,11 @@
 #define TOKEN_DATA_ERROR_CC             0x2
 #define TOKEN_DATA_ERROR_ECC            0x4
 #define TOKEN_DATA_ERROR_OUT_OF_RANGE   0x8
+#define TOKEN_WRITE_ACCEPT              0x5 // 0bxxx00101
+#define TOKEN_WRITE_ERROR_CRC           0xb // 0bxxx01011
+#define TOKEN_WRITE_ERROR               0xd // 0bxxx01101
+
+#define SD_BLOCK_LENGTH 512
 
 enum error {
     CMD0_ERROR,
