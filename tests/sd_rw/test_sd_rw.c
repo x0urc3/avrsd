@@ -12,8 +12,8 @@ static int test_cmd17 (void) {
 
     uint8_t r1 = SD_readR1();
 
-    int timeout=50;     // Based on observation
-    uint8_t token;
+    int timeout = 50;     // Based on observation
+    uint8_t token = 0xff;
     do {
         token = SPI_rw(0xff);
         timeout--;
@@ -44,8 +44,8 @@ static int test_cmd17_out_of_range (void) {
 
     uint8_t r1 = SD_readR1();
 
-    int timeout=50;     // Based on observation
-    uint8_t token;
+    int timeout = 50;     // Based on observation
+    uint8_t token = 0xff;
     do {
         token = SPI_rw(0xff);
         timeout--;

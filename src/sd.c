@@ -65,11 +65,12 @@ void SD_writeCmd(uint8_t codeword, uint32_t arg, uint8_t crc) {
 
 uint8_t SD_readR1(void) {
 
-    uint8_t r1, i = 0;
+    uint8_t r1;
+    uint8_t cycle = 10; // Requires a minimum of 8 clock cycle
     do {
         r1 = SPI_rw(0xff);
-        i++;
-    } while ( (r1 & 0x80) && i < 10);
+        cycle--;
+    } while ( (r1 & 0x80) && cycle);
 
     return r1;
 }
