@@ -72,7 +72,7 @@ static int test_acmd41(void) {
 
     uint8_t r1, i=20;
     do {
-        SD_writeAcmd(ACMD41, ACMD41_ARG1, 0);
+        SD_writeAcmd(ACMD41, ACMD41_ARG_HCS1, 0);
         r1 = SD_readR1();
         i--;
     } while ((r1 != R1_OK) && i);

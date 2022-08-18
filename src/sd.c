@@ -104,9 +104,9 @@ uint8_t SD_init(void) {
         return CMD8_ERROR;
     uint32_t arg_acmd41;
     if (r7[0] == R1_IDLE_STATE)
-        arg_acmd41 = ACMD41_ARG1;
+        arg_acmd41 = ACMD41_ARG_HCS1;
     if (r7[0] == R1_ILLEGAL_COMMAND)
-        arg_acmd41 = ACMD41_ARG0;
+        arg_acmd41 = ACMD41_ARG_HCS0;
 
     uint8_t i=20;
     do {
