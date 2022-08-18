@@ -48,11 +48,13 @@
 #define ACMD41_ARG1     0X40000000    // HSC=1 (1<<30), Ver2 SDHC/SDXC
 #define ACMD41_ARG0     0             // HSC=0, Ver1 or Ver2 SD Standard Capacity
 
+#define CMD17           17
+
 #define R1_READY_STATE      0
 #define R1_IDLE_STATE       (1<<0)
 #define R1_ILLEGAL_COMMAND  (1<<1)
 
-
+#define TOKEN_SINGLE_BLOCK_START    0xFE
 
 enum error {
     CMD0_ERROR,

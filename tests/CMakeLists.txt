@@ -4,3 +4,4 @@ target_include_directories(avrunit INTERFACE
 
 add_subdirectory(spi)
 add_subdirectory(sd)
+add_subdirectory(sd_rw)
