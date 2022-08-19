@@ -45,19 +45,43 @@
 
 #define CMD55           55
 #define ACMD41          41
-#define ACMD41_ARG1     0X40000000    // HSC=1 (1<<30), Ver2 SDHC/SDXC
-#define ACMD41_ARG0     0             // HSC=0, Ver1 or Ver2 SD Standard Capacity
+#define ACMD41_ARG_HCS1 0X40000000    // HSC=1 (1<<30), Ver2 SDHC/SDXC
+#define ACMD41_ARG_HCS0 0             // HSC=0, Ver1 or Ver2 SD Standard Capacity
 
-#define R1_READY_STATE      0
+#define CMD13           13
+#define CMD17           17
+#define CMD24           24
+
+#define SD_MAX_READ_CYCLE   1562    // Maximum length of 100ms
+                                    // 100ms * (16Mhz / 128) / 8bit
+#define SD_MAX_WRITE_CYCLE  3906    // Maximum length of 250ms
+                                    // 250ms * (16Mhz / 128) / 8bit
+
+#define R1_OK               0
 #define R1_IDLE_STATE       (1<<0)
 #define R1_ILLEGAL_COMMAND  (1<<1)
 
+#define TOKEN_BLOCK_START               0xFE
+#define TOKEN_READ_ERROR                0x1
+#define TOKEN_READ_ERROR_CC             0x2
+#define TOKEN_READ_ERROR_ECC            0x4
+#define TOKEN_READ_ERROR_OUT_OF_RANGE   0x8
+#define TOKEN_WRITE_MASK                0x1f // 0b00011111
+#define TOKEN_WRITE_ACCEPT              0x5 // 0bxxx00101
+#define TOKEN_WRITE_ERROR_CRC           0xb // 0bxxx01011
+#define TOKEN_WRITE_ERROR               0xd // 0bxxx01101
 
+#define SD_BLOCK_LENGTH 512
 
-enum error {
+enum status {
+    SUCCESS,
     CMD0_ERROR,
     CMD8_ERROR,
-    ACMD41_ERROR
+    ACMD41_ERROR,
+    CMD17_ERROR,
+    CMD17_READ_ERROR,
+    CMD24_ERROR,
+    CMD24_WRITE_ERROR
 };
 
 void SD_setup(void);
@@ -66,10 +90,19 @@ void SD_writeCmd(uint8_t codeword, uint32_t arg, uint8_t crc);
 uint8_t SD_readR1(void);
 void SD_readResponse(uint8_t *res, const uint8_t size);
 uint8_t SD_init(void);
+uint8_t SD_writeBlock(const uint8_t *dat, uint32_t addr);
+uint8_t SD_readBlock(uint8_t *dat, uint32_t addr);
 
 #define SD_writeAcmd(codeword, arg, crc)    \
     SD_writeCmd(CMD55, 0, 0);   \
     SD_readR1();   \
     SD_writeCmd(codeword, arg, crc);
+
+#define SD_flush()    \
+    SPI_CS_ENABLE();    \
+    for (int i = 0; i < 50; i++) {  \
+       SPI_rw(0xff);    \
+    }   \
+    SPI_CS_DISABLE();
 
 #endif // _SD_H

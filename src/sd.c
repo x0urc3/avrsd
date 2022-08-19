@@ -65,11 +65,12 @@ void SD_writeCmd(uint8_t codeword, uint32_t arg, uint8_t crc) {
 
 uint8_t SD_readR1(void) {
 
-    uint8_t r1, i = 0;
+    uint8_t r1;
+    uint8_t cycle = 10; // Requires a minimum of 8 clock cycle
     do {
         r1 = SPI_rw(0xff);
-        i++;
-    } while ( (r1 & 0x80) && i < 10);
+        cycle--;
+    } while ( (r1 & 0x80) && cycle);
 
     return r1;
 }
@@ -103,20 +104,83 @@ uint8_t SD_init(void) {
         return CMD8_ERROR;
     uint32_t arg_acmd41;
     if (r7[0] == R1_IDLE_STATE)
-        arg_acmd41 = ACMD41_ARG1;
+        arg_acmd41 = ACMD41_ARG_HCS1;
     if (r7[0] == R1_ILLEGAL_COMMAND)
-        arg_acmd41 = ACMD41_ARG0;
+        arg_acmd41 = ACMD41_ARG_HCS0;
 
     uint8_t i=20;
     do {
         SD_writeAcmd(ACMD41, arg_acmd41, 0);
         r1 = SD_readR1();
         i--;
-    } while ((r1 != R1_READY_STATE) && i);
-    if (r1 != R1_READY_STATE)
+    } while ((r1 != R1_OK) && i);
+    if (r1 != R1_OK)
         return ACMD41_ERROR;
 
     SPI_CS_DISABLE();
 
-    return 0;
+     return SUCCESS;
+}
+
+uint8_t SD_writeBlock(const uint8_t *dat, uint32_t addr) {
+
+    SPI_CS_ENABLE();
+
+    SD_writeCmd(CMD24, addr, 0);
+    uint8_t r1 = SD_readR1();
+
+    if (r1 != R1_OK)
+        return CMD24_ERROR;
+
+    SPI_rw(TOKEN_BLOCK_START);
+    for (int j = 0; j < SD_BLOCK_LENGTH; j++) {
+        SPI_rw(dat[j]);
+    }
+
+    int timeout = SD_MAX_WRITE_CYCLE;
+    uint8_t token = 0xff;
+    do {
+        token = SPI_rw(0xff);
+        timeout--;
+    } while ( (token == 0xff) && timeout);
+
+    SPI_CS_DISABLE();
+
+    if ((token & TOKEN_WRITE_MASK) != TOKEN_WRITE_ACCEPT)
+        return CMD24_WRITE_ERROR;
+
+     return SUCCESS;
+}
+
+uint8_t SD_readBlock(uint8_t *dat, uint32_t addr) {
+
+    SPI_CS_ENABLE();
+
+    SD_writeCmd(CMD17, addr, 0);
+    uint8_t r1 = SD_readR1();
+
+    if (r1 != R1_OK)
+        return CMD17_ERROR;
+
+    int timeout = SD_MAX_READ_CYCLE;
+    uint8_t token = 0xff;
+    do {
+        token = SPI_rw(0xff);
+        timeout--;
+    } while ( (token == 0xff) && timeout);
+
+    if ( token != TOKEN_BLOCK_START )
+        return CMD17_READ_ERROR;
+
+    for (int j = 0; j < SD_BLOCK_LENGTH; j++) {
+        dat[j] = SPI_rw(0xff);
+    }
+
+    //16-bit CRC
+    SPI_rw(0xff);
+    SPI_rw(0xff);
+
+    SPI_CS_DISABLE();
+
+    return SUCCESS;
 }
