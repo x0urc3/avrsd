@@ -98,4 +98,11 @@ uint8_t SD_readBlock(uint8_t *dat, uint32_t addr);
     SD_readR1();   \
     SD_writeCmd(codeword, arg, crc);
 
+#define SD_flush()    \
+    SPI_CS_ENABLE();    \
+    for (int i = 0; i < 50; i++) {  \
+       SPI_rw(0xff);    \
+    }   \
+    SPI_CS_DISABLE();
+
 #endif // _SD_H

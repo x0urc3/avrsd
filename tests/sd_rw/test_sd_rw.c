@@ -109,11 +109,7 @@ static int test_rw (void) {
     uint8_t status[2];
     uint8_t res[SD_BLOCK_LENGTH];
     status[0] = SD_writeBlock((const uint8_t *)dat, 0x11);
-    SPI_CS_ENABLE();
-    for (int i = 0; i < 50; i++) {
-       SPI_rw(0xff);
-    }
-    SPI_CS_DISABLE();
+    SD_flush();
     status[1] = SD_readBlock((uint8_t *)res, 0x11);
 
     AU_ASSERT(status[0] == SUCCESS);
